@@ -1,0 +1,48 @@
+@import './variables.scss';
+
+@import './Header/header.scss';
+@import './Article/article.scss';
+
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'Inter', sans-serif;
+  font-style: $font-style--normal;
+  font-weight: $font-weight--default;
+}
+
+:global {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin: 0px;
+  }
+
+  .ant-pagination {
+    display: flex;
+    justify-content: center;
+
+    &-item {
+      background-color: #1890ff;
+      border-radius: 4px;
+
+      &-active a {
+        font-size: 12px;
+        line-height: 22px;
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+.main {
+  width: 100%;
+  min-height: 92.4vh;
+  padding-top: 26px;
+  background-color: $bg-color--gray;
+}

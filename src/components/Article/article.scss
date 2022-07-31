@@ -1,0 +1,83 @@
+.article {
+  background-color: $bg-color--white;
+  display: flex;
+  justify-content: space-between;
+  max-width: 941px;
+  margin: 0px auto 26px auto;
+  padding: 15px 14px 24px 19px;
+  box-shadow: $box-shadow;
+
+  &-text {
+    max-width: 80%;
+  }
+
+  &-tag {
+    font-size: $font-size--12px;
+    line-height: $line-height--15px;
+    color: $color--gray;
+    border: 1px solid $color--gray;
+    border-radius: 2px;
+    padding: 2px 5px 3px 5px;
+    margin-right: 8px;
+  }
+
+  &-descr {
+    margin-top: 5px;
+    font-size: $font-size--12px;
+    line-height: $line-height--22px;
+    color: $text-color--default-light;
+  }
+}
+
+.title {
+  display: flex;
+
+  &-text {
+    font-size: $font-size--20px;
+    line-height: $line-height--28px;
+    color: $text-color--blue;
+    margin-bottom: 5px;
+  }
+}
+
+.likes {
+  display: flex;
+  align-items: center;
+  font-size: $font-size--12px;
+  line-height: $line-height--22px;
+  color: $text-color--default-light;
+  margin-left: 5px;
+}
+
+.like-btn {
+  border: none;
+  outline: none;
+  background-color: $bg-color--white;
+  display: block;
+  margin-left: 13px;
+}
+
+.user {
+  display: flex;
+  column-gap: 12px;
+
+  &-name {
+    text-align: end;
+    font-size: $font-size--18px;
+    line-height: $line-height--28px;
+    color: $text-color--default;
+  }
+}
+
+.created-time {
+  text-align: end;
+  font-size: $font-size--12px;
+  line-height: $line-height--22px;
+  color: $color--gray;
+}
+
+.avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+}

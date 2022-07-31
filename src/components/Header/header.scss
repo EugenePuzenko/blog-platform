@@ -1,0 +1,39 @@
+.header {
+  background-color: $bg-color--white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 22px 13px 22px;
+
+  &-text {
+    font-size: $font-size--18px;
+    line-height: $line-height--28px;
+    color: $text-color--default;
+  }
+
+  &-authorization {
+    width: 212px;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.btn {
+  border: none;
+  outline: none;
+  background-color: $bg-color--white;
+  height: 51px;
+  border-radius: 5px;
+  font-size: $font-size--18px;
+  line-height: $line-height--28px;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &-sign-up {
+    border: 1px solid $color--green;
+    color: $color--green;
+    width: 110px;
+  }
+}
