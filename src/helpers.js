@@ -5,6 +5,7 @@ export const formatData = (createdAt) => format(new Date(Date.parse(createdAt)),
 export const cutText = (movieDescr, limit) => {
   let text = movieDescr.trim();
   if (text.length <= limit) return text;
+
   text = text.slice(0, limit);
   const lastSpace = text.lastIndexOf(' ');
   if (lastSpace > 0) {
