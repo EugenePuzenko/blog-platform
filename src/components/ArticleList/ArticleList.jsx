@@ -12,16 +12,18 @@ import imgPlaceholder from '../../assets/img/img-placeholder.png';
 
 import { fetchGetArticles, setCurrentPage } from '../../store/articleSlice';
 
-window.addEventListener('DOMContentLoaded', () => {
-  const savedPage = localStorage.getItem('page');
-  console.log(savedPage);
+// const test = 1111;
 
-  if (!savedPage) localStorage.setItem('page', 1);
-});
+// window.addEventListener('DOMContentLoaded', () => {
+//         const savedPage = localStorage.getItem('page');
+//   console.log(savedPage);
 
-window.addEventListener('beforeunload', (e) => {
-  console.log(e);
-});
+//   if (!savedPage) localStorage.setItem('page', 1);
+// });
+
+// window.addEventListener('beforeunload', (e) => {
+//   console.log(e);
+// });
 
 const Article = () => {
   const [likeCount, setLikeCount] = useState(0);
