@@ -1,0 +1,12 @@
+.current-article {
+  min-height: 807px;
+
+  &-descr {
+    margin-top: 16px;
+  }
+}
+
+.article-body {
+  margin-top: 25px;
+  overflow: hidden;
+}

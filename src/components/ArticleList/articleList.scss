@@ -6,6 +6,7 @@
   margin: 0px auto 26px auto;
   padding: 15px 14px 24px 19px;
   box-shadow: $box-shadow;
+  min-height: 140px;
 
   &-text {
     max-width: 80%;
@@ -22,6 +23,7 @@
   }
 
   &-descr {
+    overflow: hidden;
     margin-top: 5px;
     font-size: $font-size--12px;
     line-height: $line-height--22px;
