@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 
-export const formatData = (createdAt) => format(new Date(Date.parse(createdAt)), 'MMMM d, yyyy');
+export const formatData = (createdAt) =>
+  createdAt ? format(new Date(Date.parse(createdAt)), 'MMMM d, yyyy') : createdAt;
 
 export const cutText = (movieDescr, limit) => {
   let text = movieDescr.trim();

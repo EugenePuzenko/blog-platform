@@ -37,26 +37,18 @@ const articleSlice = createSlice({
   name: 'article',
   initialState: {
     articles: [],
+    isArticlesListLoading: true,
     articlesCount: null,
-    currentArticle: null,
     selectedArticle: null,
-    currentPage: 1,
+    isSelectedArticleLoading: true,
   },
-  reducers: {
-    getCurrentArticle(state, action) {
-      state.currentArticle = action.payload;
-    },
-    setCurrentPage(state, action) {
-      state.currentPage = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: {
-    // [fetchGetArticles.pending]: (state) => {
-    //   state.ticketsListStatus = 'loading';
-    //   state.ticketsListError = null;
-    // },
+    [fetchGetArticles.pending]: (state) => {
+      state.isArticlesListLoading = true;
+    },
     [fetchGetArticles.fulfilled]: (state, action) => {
-      state.currentArticle = null;
+      state.isArticlesListLoading = false;
       state.selectedArticle = null;
       state.articles = [...action.payload.articles];
       state.articlesCount = action.payload.articlesCount;
@@ -64,7 +56,11 @@ const articleSlice = createSlice({
     },
     // [fetchGetArticles.rejected]: (state, action) => {},
 
+    [fetchCurrentArticle.pending]: (state) => {
+      state.isSelectedArticleLoading = true;
+    },
     [fetchCurrentArticle.fulfilled]: (state, action) => {
+      state.isSelectedArticleLoading = false;
       state.selectedArticle = action.payload.article;
     },
   },

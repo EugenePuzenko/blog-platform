@@ -1,78 +1,78 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import ReactMarkdown from 'react-markdown';
-
 import { useParams } from 'react-router-dom';
 
+import 'react-loading-skeleton/dist/skeleton.css';
 import classes from '../App.module.scss';
-import likedBtn from '../../assets/img/liked.svg';
+// import likedBtn from '../../assets/img/liked.svg';
 import unlikedBtn from '../../assets/img/like.svg';
 import { formatData, cutText } from '../../helpers';
 import imgPlaceholder from '../../assets/img/img-placeholder.png';
 import { fetchCurrentArticle } from '../../store/articleSlice';
+import LoadingSpin from '../LoadingSpin/LoadingSpin';
 
 const CurrentArticle = () => {
   const { slug } = useParams();
 
   const dispatch = useDispatch();
-  const { selectedArticle } = useSelector((state) => state.article);
-
-  const [likeCount, setLikeCount] = useState(0);
-  const [isLike, setIsLike] = useState(false);
-  const onLikeClick = () => {
-    setLikeCount(likeCount + (isLike ? -1 : 1));
-    setIsLike(!isLike);
-  };
+  const { selectedArticle, isSelectedArticleLoading } = useSelector((state) => state.article);
 
   useEffect(() => {
     dispatch(fetchCurrentArticle(slug));
   }, [dispatch, slug]);
 
+  const loadingSpinner = !selectedArticle && isSelectedArticleLoading && <LoadingSpin />;
+
   return (
-    selectedArticle && (
-      <article className={`${classes['current-article']} ${classes.article}`} key={uuidv4()}>
-        <div className={classes['article-text']}>
-          <div className={classes.title}>
-            <h2 className={classes['title-text']}>{selectedArticle.title}</h2>
-            <button className={classes['like-btn']} onClick={onLikeClick} type="button">
-              <img src={isLike ? likedBtn : unlikedBtn} alt="like" />
-            </button>
-            <span className={classes.likes}>{likeCount}</span>
+    <article className={`${classes['current-article']} ${classes.article}`} key={uuidv4()}>
+      {loadingSpinner}
+      {selectedArticle && !isSelectedArticleLoading && (
+        <>
+          <div className={classes['article-text']}>
+            <div className={classes.title}>
+              <h2 className={classes['title-text']}>{selectedArticle.title}</h2>
+              <button className={classes['like-btn']} type="button">
+                <img src={unlikedBtn} alt="like" />
+              </button>
+              <span className={classes.likes}>{selectedArticle.favoritesCount}</span>
+            </div>
+            {selectedArticle.length &&
+              selectedArticle.tagList
+                .filter((v, i, a) => a.indexOf(v) === i)
+                .map(
+                  (tag) =>
+                    !!tag && (
+                      <span className={classes['article-tag']} key={uuidv4()}>
+                        {cutText(tag, 30)}
+                      </span>
+                    )
+                )}
+            <p className={`${classes['article-descr']} ${classes['current-article-descr']}`}>
+              {selectedArticle.description}
+            </p>
+            <div className={classes['article-body']}>
+              <ReactMarkdown>{selectedArticle.body}</ReactMarkdown>
+            </div>
           </div>
-          {selectedArticle.tagList
-            .filter((v, i, a) => a.indexOf(v) === i)
-            .map(
-              (tag) =>
-                !!tag && (
-                  <span className={classes['article-tag']} key={uuidv4()}>
-                    {cutText(tag, 30)}
-                  </span>
-                )
-            )}
-          <p className={`${classes['article-descr']} ${classes['current-article-descr']}`}>
-            {selectedArticle.description}
-          </p>
-          <div className={classes['article-body']}>
-            <ReactMarkdown>{selectedArticle.body}</ReactMarkdown>
+          <div className={classes.user}>
+            <div>
+              <div className={classes['user-name']}>{selectedArticle.author.username}</div>
+              <div className={classes['created-time']}>{formatData(selectedArticle.createdAt)}</div>
+            </div>
+            <img
+              className={classes.avatar}
+              src={selectedArticle.author.image}
+              alt="avatar"
+              onError={(e) => {
+                e.currentTarget.src = imgPlaceholder;
+              }}
+            />
           </div>
-        </div>
-        <div className={classes.user}>
-          <div>
-            <div className={classes['user-name']}>{selectedArticle.author.username}</div>
-            <div className={classes['created-time']}>{formatData(selectedArticle.createdAt)}</div>
-          </div>
-          <img
-            className={classes.avatar}
-            src={selectedArticle.author.image}
-            alt="avatar"
-            onError={(e) => {
-              e.currentTarget.src = imgPlaceholder;
-            }}
-          />
-        </div>
-      </article>
-    )
+        </>
+      )}
+    </article>
   );
 };
 

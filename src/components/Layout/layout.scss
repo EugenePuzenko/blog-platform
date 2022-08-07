@@ -6,6 +6,7 @@
   padding: 16px 22px 13px 22px;
 
   &-text {
+    font-family: 'Inter', sans-serif;
     font-size: $font-size--18px;
     line-height: $line-height--28px;
     color: $text-color--default;
@@ -19,6 +20,11 @@
 }
 
 .btn {
+  color: $text-color--default;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: none;
   outline: none;
   background-color: $bg-color--white;
@@ -32,6 +38,7 @@
   }
 
   &-sign-up {
+    font-family: 'Inter', sans-serif;
     border: 1px solid $color--green;
     color: $color--green;
     width: 110px;

@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import classes from '../App.module.scss';
 
 const Layout = () => {
@@ -7,12 +7,12 @@ const Layout = () => {
       <header className={classes.header}>
         <h1 className={classes['header-text']}>Realworld Blog</h1>
         <div className={classes['header-authorization']}>
-          <button type="button" className={classes.btn}>
+          <Link to="/sign-in" className={classes.btn}>
             Sign In
-          </button>
-          <button type="button" className={`${classes.btn} ${classes['btn-sign-up']}`}>
+          </Link>
+          <Link to="sign-up" type="button" className={`${classes.btn} ${classes['btn-sign-up']}`}>
             Sign Up
-          </button>
+          </Link>
         </div>
       </header>
       <main className={classes.main}>
