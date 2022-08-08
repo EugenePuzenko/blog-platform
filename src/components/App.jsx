@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import ArticleList from './ArticleList/ArticleList';
 import CurrentArticle from './CurrentArticle/CurrentArticle';
 import SignIn from './SignIn/SignIn';
@@ -9,7 +9,8 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route index element={<ArticleList />} />
+        <Route index element={<Navigate to="articles" replace />} />
+        <Route path="articles" element={<ArticleList />} />
         <Route path="articles/page=:page" element={<ArticleList />} />
         <Route path="articles/page=:page/article=:slug" element={<CurrentArticle />} />
         <Route path="sign-in" element={<SignIn />} />
