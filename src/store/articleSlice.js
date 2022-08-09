@@ -2,9 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export const BASE_URL = 'https://blog.kata.academy/api/';
-// const TOKEN =
-//   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyZGRhODQwM2NmNzA1MWIwMDgyOGQ5MSIsInVzZXJuYW1lIjoidGVzdHVzZXJ0aGlzYXBpIiwiZXhwIjoxNjYzODgyMzU1LCJpYXQiOjE2NTg2OTgzNTV9.dE1TGKZfMT2p7YvoEjxZF7AN1vkYS-tLPzzwXjBNzmY';
-// Authorization: `Token ${TOKEN}`,
 
 export const fetchGetArticles = createAsyncThunk(
   'articles/fetchGetArticles',

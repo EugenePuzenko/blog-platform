@@ -51,7 +51,7 @@ const Article = () => {
                   <button className={classes['like-btn']} onClick={onLikeClick} type="button">
                     <img src={isLike ? likedBtn : unlikedBtn} alt="like" />
                   </button>
-                  <span className={classes.likes}>{likeCount}</span>
+                  <span className={classes.likes}>{article.favoritesCount}</span>
                 </div>
                 <div>
                   {article.tagList

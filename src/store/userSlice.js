@@ -2,10 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { BASE_URL } from './articleSlice';
 
-// const TOKEN =
-//   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyZGRhODQwM2NmNzA1MWIwMDgyOGQ5MSIsInVzZXJuYW1lIjoidGVzdHVzZXJ0aGlzYXBpIiwiZXhwIjoxNjYzODgyMzU1LCJpYXQiOjE2NTg2OTgzNTV9.dE1TGKZfMT2p7YvoEjxZF7AN1vkYS-tLPzzwXjBNzmY';
-// Authorization: `Token ${TOKEN}`,
-
 export const fetchCreateUser = createAsyncThunk(
   'user/fetchCreateUser',
   // eslint-disable-next-line no-unused-vars
@@ -34,6 +30,28 @@ export const fetchCreateUser = createAsyncThunk(
   }
 );
 
+export const fetchGetCurrentUser = createAsyncThunk(
+  'user/fetchGetCurrentUser',
+  // eslint-disable-next-line no-unused-vars, no-empty-pattern
+  async (token, { _, rejectWithValue }) => {
+    return axios
+      .get(`${BASE_URL}user`, {
+        headers: {
+          'Content-Type': 'application/json',
+          accept: 'application/json',
+          Authorization: `Token ${token}`,
+        },
+      })
+      .then(({ data }) => data.user)
+      .catch((err) => {
+        return rejectWithValue({
+          status: err.response.status,
+          statusText: err?.response?.data?.errors?.message,
+        });
+      });
+  }
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState: {
@@ -44,13 +62,27 @@ const userSlice = createSlice({
     userRequestStatus: null,
     errorUserServer: null,
     userIsEdit: false,
+    isLoggedIn: false,
   },
-  reducers: {},
+  reducers: {
+    logOut(state) {
+      localStorage.removeItem('token');
+      state.username = '';
+      state.email = '';
+      state.bio = '';
+      state.image = '';
+      state.userRequestStatus = null;
+      state.errorUserServer = null;
+      state.userIsEdit = false;
+      state.isLoggedIn = false;
+    },
+  },
   extraReducers: {
     // [fetchCreateUser.pending]: (state, action) => {
     // console.log(state, action.payload);
     // },
     [fetchCreateUser.fulfilled]: (state, action) => {
+      state.isLoggedIn = true;
       state.userRequestStatus = 'fulfilled';
       const { username, email, token } = action.payload;
       localStorage.setItem('token', token);
@@ -61,9 +93,24 @@ const userSlice = createSlice({
       state.userRequestStatus = 'rejected';
       state.errorUserServer = action.payload;
     },
+
+    // [fetchGetCurrentUser.pending]: (state, action) => {
+    //   console.log(action.payload);
+    // },
+    [fetchGetCurrentUser.fulfilled]: (state, action) => {
+      state.isLoggedIn = true;
+      state.userRequestStatus = 'fulfilled';
+      const { username, email, token } = action.payload;
+      localStorage.setItem('token', token);
+      state.username = username;
+      state.email = email;
+    },
+    // [fetchGetCurrentUser.rejected]: (state, action) => {
+    //   console.log(action.payload);
+    // },
   },
 });
 
-// export const {} = userSlice.actions;
+export const { logOut } = userSlice.actions;
 
 export default userSlice.reducer;
