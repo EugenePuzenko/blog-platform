@@ -13,11 +13,13 @@ import imgPlaceholder from '../../assets/img/img-placeholder.png';
 import { fetchCurrentArticle } from '../../store/articleSlice';
 import LoadingSpin from '../LoadingSpin/LoadingSpin';
 
+import { selectArticle } from '../../store/selectors';
+
 const CurrentArticle = () => {
   const { slug } = useParams();
 
   const dispatch = useDispatch();
-  const { selectedArticle, isSelectedArticleLoading } = useSelector((state) => state.article);
+  const { selectedArticle, isSelectedArticleLoading } = useSelector(selectArticle);
 
   useEffect(() => {
     dispatch(fetchCurrentArticle(slug));
@@ -38,8 +40,8 @@ const CurrentArticle = () => {
               </button>
               <span className={classes.likes}>{selectedArticle.favoritesCount}</span>
             </div>
-            {selectedArticle.length &&
-              selectedArticle.tagList
+            <div className={classes['article-tags']}>
+              {selectedArticle.tagList
                 .filter((v, i, a) => a.indexOf(v) === i)
                 .map(
                   (tag) =>
@@ -49,6 +51,7 @@ const CurrentArticle = () => {
                       </span>
                     )
                 )}
+            </div>
             <p className={`${classes['article-descr']} ${classes['current-article-descr']}`}>
               {selectedArticle.description}
             </p>

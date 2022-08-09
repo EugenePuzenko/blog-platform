@@ -44,3 +44,37 @@
     width: 110px;
   }
 }
+
+.loged-in {
+  width: auto;
+  display: flex;
+  align-items: center;
+  column-gap: 25px;
+}
+
+.create-btn {
+  font-family: 'Inter';
+  font-style: $font-style--normal;
+  font-weight: $font-weight--default;
+  font-size: $font-size--14px;
+  line-height: $line-height--22px;
+  color: $color--green;
+  border: 1px solid $color--green;
+  border-radius: 5px;
+  padding: 6px 10px;
+}
+
+.username {
+  margin-right: 10px;
+  font-family: 'Inter';
+  font-style: $font-style--normal;
+  font-weight: $font-weight--default;
+  font-size: $font-size--18px;
+  line-height: $line-height--28px;
+  color: $text-color--default;
+}
+
+.btn-log-out {
+  padding: 6px 18px 10px 18px;
+  border: 1px solid $text-color--default-light;
+}

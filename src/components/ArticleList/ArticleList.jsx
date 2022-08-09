@@ -7,12 +7,10 @@ import classes from '../App.module.scss';
 import likedBtn from '../../assets/img/liked.svg';
 import unlikedBtn from '../../assets/img/like.svg';
 import { formatData, cutText } from '../../helpers';
-
 import imgPlaceholder from '../../assets/img/img-placeholder.png';
-
 import { fetchGetArticles } from '../../store/articleSlice';
-
 import ArticleSkeleton from './ArticleSkeleton';
+import { selectArticle } from '../../store/selectors';
 
 const Article = () => {
   const [likeCount, setLikeCount] = useState(0);
@@ -27,7 +25,7 @@ const Article = () => {
 
   const [routPage, setRoutPage] = useState(+page ? +page : 1);
 
-  const { articlesCount, articles, isArticlesListLoading } = useSelector((state) => state.article);
+  const { articlesCount, articles, isArticlesListLoading } = useSelector(selectArticle);
 
   useEffect(() => {
     dispatch(fetchGetArticles({ limit: 5, offset: page * 5 - 5 }));
@@ -55,16 +53,18 @@ const Article = () => {
                   </button>
                   <span className={classes.likes}>{likeCount}</span>
                 </div>
-                {article.tagList
-                  .filter((v, i, a) => a.indexOf(v) === i)
-                  .map(
-                    (tag) =>
-                      !!tag && (
-                        <span className={classes['article-tag']} key={uuidv4()}>
-                          {cutText(tag, 30)}
-                        </span>
-                      )
-                  )}
+                <div>
+                  {article.tagList
+                    .filter((v, i, a) => a.indexOf(v) === i && i < 10)
+                    .map(
+                      (tag) =>
+                        !!tag && (
+                          <span className={classes['article-tag']} key={uuidv4()}>
+                            {cutText(tag, 30)}
+                          </span>
+                        )
+                    )}
+                </div>
                 <p className={classes['article-descr']}>{article.description && cutText(article.description, 220)}</p>
               </div>
               <div className={classes.user}>
