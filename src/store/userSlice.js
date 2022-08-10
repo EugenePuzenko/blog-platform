@@ -52,6 +52,67 @@ export const fetchGetCurrentUser = createAsyncThunk(
   }
 );
 
+export const fetchSignInUser = createAsyncThunk(
+  'user/fetchSignInUser',
+  // eslint-disable-next-line no-unused-vars
+  async ({ email, password }, { _, rejectWithValue }) => {
+    return axios
+      .post(
+        `${BASE_URL}users/login`,
+        {
+          user: {
+            email,
+            password,
+          },
+        },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+      .then(({ data }) => data.user)
+      .catch((err) => {
+        return rejectWithValue({
+          status: err.response.status,
+          statusText: err?.message,
+        });
+      });
+  }
+);
+
+export const fetchUpdateCurrentUser = createAsyncThunk(
+  'user/fetchUpdateCurrentUser',
+  // eslint-disable-next-line no-unused-vars
+  async ({ username, email, password, bio, image, token }, { _, rejectWithValue }) => {
+    return axios
+      .put(
+        `${BASE_URL}user`,
+        {
+          user: {
+            username,
+            email,
+            password,
+            bio,
+            image,
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            accept: 'application/json',
+            Authorization: `Token ${token}`,
+          },
+        }
+      )
+      .then(({ data }) => data.user)
+      .catch((err) => {
+        return rejectWithValue({
+          status: err.response.status,
+          statusText: err?.message,
+        });
+      });
+  }
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState: {
@@ -61,8 +122,11 @@ const userSlice = createSlice({
     image: '',
     userRequestStatus: null,
     errorUserServer: null,
+    errorSignInServer: null,
+    errorEditProfileServer: null,
     userIsEdit: false,
     isLoggedIn: false,
+    userEditProfileStatus: null,
   },
   reducers: {
     logOut(state) {
@@ -73,8 +137,15 @@ const userSlice = createSlice({
       state.image = '';
       state.userRequestStatus = null;
       state.errorUserServer = null;
+      state.errorSignInServer = null;
       state.userIsEdit = false;
       state.isLoggedIn = false;
+    },
+    closeAlert(state) {
+      state.errorSignInServer = null;
+    },
+    resetStatus(state) {
+      state.userEditProfileStatus = null;
     },
   },
   extraReducers: {
@@ -100,17 +171,55 @@ const userSlice = createSlice({
     [fetchGetCurrentUser.fulfilled]: (state, action) => {
       state.isLoggedIn = true;
       state.userRequestStatus = 'fulfilled';
+      const { username, email, image, token } = action.payload;
+      localStorage.setItem('token', token);
+      state.username = username;
+      state.email = email;
+      state.image = image;
+    },
+    // [fetchGetCurrentUser.rejected]: (state, action) => {
+    //   console.log(action.payload);
+    // },
+
+    [fetchSignInUser.pending]: (state, action) => {
+      state.errorSignInServer = null;
+      state.errorUserServer = action.payload;
+    },
+    [fetchSignInUser.fulfilled]: (state, action) => {
+      state.isLoggedIn = true;
+      state.userRequestStatus = 'fulfilled';
       const { username, email, token } = action.payload;
       localStorage.setItem('token', token);
       state.username = username;
       state.email = email;
     },
-    // [fetchGetCurrentUser.rejected]: (state, action) => {
-    //   console.log(action.payload);
-    // },
+    [fetchSignInUser.rejected]: (state, action) => {
+      state.userRequestStatus = 'rejected';
+      state.errorSignInServer = action.payload.statusText;
+    },
+
+    [fetchUpdateCurrentUser.pending]: (state, action) => {
+      console.log('pending', state, action.payload);
+      state.errorEditProfileServer = null;
+    },
+    [fetchUpdateCurrentUser.fulfilled]: (state, action) => {
+      console.log('fulfilled', state, action.payload);
+      state.isLoggedIn = true;
+      state.userEditProfileStatus = 'fulfilled';
+      const { username, email, token, image } = action.payload;
+      localStorage.setItem('token', token);
+      state.username = username;
+      state.email = email;
+      state.image = image;
+    },
+    [fetchUpdateCurrentUser.rejected]: (state, action) => {
+      console.log('rejected', state, action.payload);
+      state.userEditProfileStatus = 'rejected';
+      state.errorEditProfileServer = action.payload.statusText;
+    },
   },
 });
 
-export const { logOut } = userSlice.actions;
+export const { logOut, closeAlert, resetStatus } = userSlice.actions;
 
 export default userSlice.reducer;

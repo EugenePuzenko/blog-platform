@@ -9,10 +9,20 @@ import unlikedBtn from '../../assets/img/like.svg';
 import { formatData, cutText } from '../../helpers';
 import imgPlaceholder from '../../assets/img/img-placeholder.png';
 import { fetchGetArticles } from '../../store/articleSlice';
+import { resetStatus, fetchGetCurrentUser } from '../../store/userSlice';
 import ArticleSkeleton from './ArticleSkeleton';
 import { selectArticle } from '../../store/selectors';
 
 const Article = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem('token');
+    if (loggedInUser) {
+      dispatch(fetchGetCurrentUser(loggedInUser));
+    }
+  }, [dispatch]);
+
   const [likeCount, setLikeCount] = useState(0);
   const [isLike, setIsLike] = useState(false);
   const onLikeClick = () => {
@@ -21,7 +31,6 @@ const Article = () => {
   };
 
   const { page } = useParams();
-  const dispatch = useDispatch();
 
   const [routPage, setRoutPage] = useState(+page ? +page : 1);
 
@@ -30,6 +39,10 @@ const Article = () => {
   useEffect(() => {
     dispatch(fetchGetArticles({ limit: 5, offset: page * 5 - 5 }));
   }, [dispatch, page]);
+
+  useEffect(() => {
+    dispatch(resetStatus());
+  }, []);
 
   const paginationCustomByRout = (numberOfPage, type, originalElement) => {
     if (type === 'page') return <Link to={`/articles/page=${numberOfPage}`}>{numberOfPage}</Link>;

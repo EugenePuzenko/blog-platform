@@ -33,7 +33,7 @@ const Layout = () => {
             <Link to="profile">
               <div>
                 <span className={classes.username}>{username}</span>
-                <img src={userAvatar} alt="user-avatar" />
+                <img className={classes['user-avatar']} src={userAvatar} alt="user-avatar" />
               </div>
             </Link>
             <button
