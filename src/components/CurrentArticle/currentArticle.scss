@@ -1,5 +1,6 @@
 .current-article {
   min-height: 807px;
+  display: block;
 
   &-descr {
     margin-top: 16px;
@@ -7,8 +8,12 @@
 }
 
 .article-body {
-  margin-top: 25px;
+  margin-top: 45px;
   overflow: hidden;
+}
+
+.article-body img {
+  width: 100%;
 }
 
 .article-spin {
@@ -23,8 +28,13 @@
   flex-wrap: wrap;
 }
 
-.aside {
 
+.current-article-text {
+  width: 100%;
+}
+
+.aside {
+  float: right;
 }
 
 .confirm-btn {
@@ -42,12 +52,17 @@
 }
 
 .confirm-delete-btn {
-  border: 1px solid #F5222D;
-  color: #F5222D;
+  border: 1px solid #f5222d;
+  color: #f5222d;
+  height: 38px;
+
+  &:hover {
+    background-color: #f5222d;
+  }
 }
 
 .confirm-edit-btn {
   margin-left: 12px;
-  color: #52C41A;
-  border: 1px solid #52C41A;
+  color: #52c41a;
+  border: 1px solid #52c41a;
 }

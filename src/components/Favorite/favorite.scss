@@ -1,0 +1,24 @@
+
+.favorite {
+    transform: translate(30px, 7px);
+}
+
+.checkbox {
+  appearance: none;
+
+  &:checked + .custom-checkbox {
+    background-image: url(../../assets/img/liked.svg);
+    height: 14px;
+    cursor: pointer;
+  }
+}
+
+.custom-checkbox {
+  position: absolute;
+  margin-left: -18px;
+  width: 16px;
+  height: 15px;
+  background-image: url(../../assets/img/like.svg);
+  background-color: #ffffff;
+    cursor: pointer;
+}

@@ -85,6 +85,20 @@ export const fetchEditArticle = createAsyncThunk(
   }
 );
 
+export const fetchDeleteArticle = createAsyncThunk('articles/fetchDeleteArticle', async (slug, { rejectWithValue }) =>
+  axios
+    .delete(`${BASE_URL}articles/${slug}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Token ${localStorage.getItem('token')}`,
+      },
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      return rejectWithValue({ status: err.response.status, statusText: err.response.statusText });
+    })
+);
+
 const articleSlice = createSlice({
   name: 'article',
   initialState: {
@@ -130,6 +144,11 @@ const articleSlice = createSlice({
     // [fetchEditArticle.rejected]: () => {
     //   console.log('rejected');
     // },
+
+    [fetchDeleteArticle.fulfilled]: (state) => {
+      state.articleRequestStatus = 'fulfilled';
+      // state.userRequestStatus = true;
+    },
   },
 });
 
