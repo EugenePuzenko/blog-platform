@@ -30,6 +30,61 @@ export const fetchCurrentArticle = createAsyncThunk('articles/fetchCurrentArticl
     .catch((err) => rejectWithValue({ status: err.response.status, statusText: err.response.statusText }))
 );
 
+export const fetchCreateArticle = createAsyncThunk(
+  'articles/fetchCreateArticle',
+  async ({ title, description, body, tagList }, { rejectWithValue }) => {
+    return axios
+      .post(
+        `${BASE_URL}articles`,
+        {
+          article: {
+            title,
+            description,
+            body,
+            tagList,
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            accept: 'application/json',
+            Authorization: `Token ${localStorage.getItem('token')}`,
+          },
+        }
+      )
+      .then(({ data }) => data)
+      .catch((err) => rejectWithValue({ status: err.response.status, statusText: err.response.statusText }));
+  }
+);
+
+export const fetchEditArticle = createAsyncThunk(
+  'articles/fetchEditArticle',
+  async ({ slug, title, description, body, tagList }, { rejectWithValue }) => {
+    axios
+      .put(
+        `${BASE_URL}articles/${slug}`,
+        {
+          article: {
+            title,
+            description,
+            body,
+            tagList,
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Token ${localStorage.getItem('token')}`,
+          },
+        }
+      )
+      .then((res) => res.data)
+      .catch((err) => {
+        return rejectWithValue(err.message);
+      });
+  }
+);
+
 const articleSlice = createSlice({
   name: 'article',
   initialState: {
@@ -60,6 +115,21 @@ const articleSlice = createSlice({
       state.isSelectedArticleLoading = false;
       state.selectedArticle = action.payload.article;
     },
+
+    // [fetchCreateArticle.pending]: (state) => {},
+    // [fetchCreateArticle.fulfilled]: (state, action) => {},
+    // [fetchCreateArticle.rejected]: (state, action) => {},
+
+    // [fetchEditArticle.pending]: () => {
+    //   console.log('pending');
+    // },
+    [fetchEditArticle.fulfilled]: (state) => {
+      state.articleRequestStatus = 'fulfilled';
+      // state.userRequestStatus = true;
+    },
+    // [fetchEditArticle.rejected]: () => {
+    //   console.log('rejected');
+    // },
   },
 });
 

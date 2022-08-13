@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { Alert } from 'antd';
@@ -16,18 +16,14 @@ const SignIn = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
   const userRequestStatus = useSelector((state) => state.user.userRequestStatus);
   const errorSignInServer = useSelector((state) => state.user.errorSignInServer);
-  // const userIsEdit = useSelector((state) => state.user.userIsEdit);
-
-  const fromPage = location.state?.from?.pathname || '/';
 
   useEffect(() => {
     if (userRequestStatus === 'fulfilled') {
-      navigate(fromPage, { replace: true });
+      navigate('/', { replace: true });
     }
-  }, [dispatch, navigate, fromPage, userRequestStatus]);
+  }, [dispatch, navigate, userRequestStatus]);
 
   const onSubmit = (data) => {
     dispatch(fetchSignInUser(data));

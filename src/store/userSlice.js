@@ -55,8 +55,8 @@ export const fetchGetCurrentUser = createAsyncThunk(
 export const fetchSignInUser = createAsyncThunk(
   'user/fetchSignInUser',
   // eslint-disable-next-line no-unused-vars
-  async ({ email, password }, { _, rejectWithValue }) => {
-    return axios
+  async ({ email, password }, { _, rejectWithValue }) =>
+    axios
       .post(
         `${BASE_URL}users/login`,
         {
@@ -75,15 +75,14 @@ export const fetchSignInUser = createAsyncThunk(
           status: err.response.status,
           statusText: err?.message,
         });
-      });
-  }
+      })
 );
 
 export const fetchUpdateCurrentUser = createAsyncThunk(
   'user/fetchUpdateCurrentUser',
   // eslint-disable-next-line no-unused-vars
-  async ({ username, email, password, bio, image, token }, { _, rejectWithValue }) => {
-    return axios
+  async ({ username, email, password, bio, image, token }, { _, rejectWithValue }) =>
+    axios
       .put(
         `${BASE_URL}user`,
         {
@@ -109,8 +108,7 @@ export const fetchUpdateCurrentUser = createAsyncThunk(
           status: err.response.status,
           statusText: err?.message,
         });
-      });
-  }
+      })
 );
 
 const userSlice = createSlice({

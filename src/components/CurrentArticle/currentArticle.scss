@@ -22,3 +22,32 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+.aside {
+
+}
+
+.confirm-btn {
+  margin-top: 30px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  padding: 6px 17px;
+  border-radius: 5px;
+}
+
+.confirm-delete-btn {
+  border: 1px solid #F5222D;
+  color: #F5222D;
+}
+
+.confirm-edit-btn {
+  margin-left: 12px;
+  color: #52C41A;
+  border: 1px solid #52C41A;
+}

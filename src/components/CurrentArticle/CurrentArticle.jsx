@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import ReactMarkdown from 'react-markdown';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 import 'react-loading-skeleton/dist/skeleton.css';
 import classes from '../App.module.scss';
@@ -12,11 +12,13 @@ import { formatData, cutText } from '../../helpers';
 import imgPlaceholder from '../../assets/img/img-placeholder.png';
 import { fetchCurrentArticle } from '../../store/articleSlice';
 import LoadingSpin from '../LoadingSpin/LoadingSpin';
+import useAuth from '../hooks/useAuth';
 
 import { selectArticle } from '../../store/selectors';
 
 const CurrentArticle = () => {
   const { slug } = useParams();
+  const { username } = useAuth();
 
   const dispatch = useDispatch();
   const { selectedArticle, isSelectedArticleLoading } = useSelector(selectArticle);
@@ -59,19 +61,33 @@ const CurrentArticle = () => {
               <ReactMarkdown>{selectedArticle.body}</ReactMarkdown>
             </div>
           </div>
-          <div className={classes.user}>
-            <div>
-              <div className={classes['user-name']}>{selectedArticle.author.username}</div>
-              <div className={classes['created-time']}>{formatData(selectedArticle.createdAt)}</div>
+          <div className={classes.aside}>
+            <div className={classes.user}>
+              <div>
+                <div className={classes['user-name']}>{selectedArticle.author.username}</div>
+                <div className={classes['created-time']}>{formatData(selectedArticle.createdAt)}</div>
+              </div>
+              <img
+                className={classes.avatar}
+                src={selectedArticle.author.image}
+                alt="avatar"
+                onError={(e) => {
+                  e.currentTarget.src = imgPlaceholder;
+                }}
+              />
             </div>
-            <img
-              className={classes.avatar}
-              src={selectedArticle.author.image}
-              alt="avatar"
-              onError={(e) => {
-                e.currentTarget.src = imgPlaceholder;
-              }}
-            />
+            {selectedArticle.author.username === username && (
+              <div>
+                <button className={`${classes['confirm-btn']} ${classes['confirm-delete-btn']}`} type="button">
+                  Delete
+                </button>
+                <Link to="edit">
+                  <button className={`${classes['confirm-btn']} ${classes['confirm-edit-btn']}`} type="button">
+                    Edit
+                  </button>
+                </Link>
+              </div>
+            )}
           </div>
         </>
       )}

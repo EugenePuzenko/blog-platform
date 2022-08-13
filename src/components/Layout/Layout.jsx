@@ -27,7 +27,7 @@ const Layout = () => {
         )}
         {isAuth && (
           <div className={`${classes['header-authorization']} ${classes['loged-in']}`}>
-            <Link to="/" className={classes['create-btn']}>
+            <Link to="new-article" className={classes['create-btn']}>
               Create article
             </Link>
             <Link to="profile">
@@ -36,13 +36,15 @@ const Layout = () => {
                 <img className={classes['user-avatar']} src={userAvatar} alt="user-avatar" />
               </div>
             </Link>
-            <button
-              onClick={() => dispatch(logOut())}
-              type="button"
-              className={`${classes.btn} ${classes['btn-log-out']}`}
-            >
-              Log Out
-            </button>
+            <Link to="/">
+              <button
+                onClick={() => dispatch(logOut())}
+                type="button"
+                className={`${classes.btn} ${classes['btn-log-out']}`}
+              >
+                Log Out
+              </button>
+            </Link>
           </div>
         )}
       </header>

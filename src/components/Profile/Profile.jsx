@@ -19,7 +19,6 @@ const SignUp = () => {
       .max(20, 'Имя не может быть больше 20 символов.'),
     email: Yup.string().required('Поле обязательно к заполнению.').email('Почтовый адрес должен быть корректным.'),
     password: Yup.string()
-      .required('Поле обязательно к заполнению.')
       .min(6, 'Пароль не может быть меньше 6 символов.')
       .max(40, 'Пароль не может быть больше 40 символов.'),
     image: Yup.string()
@@ -29,13 +28,8 @@ const SignUp = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  //   const location = useLocation();
   const userEditProfileStatus = useSelector((state) => state.user.userEditProfileStatus);
   const errorEditProfileServer = useSelector((state) => state.user.errorEditProfileServer);
-
-  //   const fromPage = location.state?.from?.pathname || '/';
-
-  //   console.log(fromPage);
 
   useEffect(() => {
     if (userEditProfileStatus === 'fulfilled') {

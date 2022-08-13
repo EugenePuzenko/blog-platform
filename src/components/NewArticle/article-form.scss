@@ -1,0 +1,41 @@
+.article-form {
+    width: 938px;
+    min-height: 700px;
+}
+
+.text-area {
+    min-height: 170px;
+}
+
+.form-tag-input {
+    width: 300px;
+}
+
+.tag-btn {
+    background: none;
+	border: none;
+	cursor: pointer;
+    padding: 8px 36px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    margin-left: 18px;
+}
+
+.add-btn {
+    border: 1px solid #1890FF;
+    border-radius: 4px;
+    color: #1890FF;
+}
+
+.delete-btn {
+    border: 1px solid #F5222D;
+    border-radius: 4px;
+    color: #F5222D;
+}
+
+.form-btn-send {
+    width: 320px;
+}
