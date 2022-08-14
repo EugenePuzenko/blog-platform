@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -99,6 +100,42 @@ export const fetchDeleteArticle = createAsyncThunk('articles/fetchDeleteArticle'
     })
 );
 
+export const fetchFavoriteArticle = createAsyncThunk(
+  'articles/fetchFavoriteArticle',
+  async (slug, { rejectWithValue }) =>
+    axios
+      .post(
+        `${BASE_URL}articles/${slug}/favorite`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Token ${localStorage.getItem('token')}`,
+          },
+        }
+      )
+      .then((res) => res.data)
+      .catch((err) => {
+        return rejectWithValue({ status: err.response.status, statusText: err.response.statusText });
+      })
+);
+
+export const fetchUnfavoriteArticle = createAsyncThunk(
+  'articles/fetchUnfavoriteArticle',
+  async (slug, { rejectWithValue }) =>
+    axios
+      .delete(`${BASE_URL}articles/${slug}/favorite`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Token ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => res.data)
+      .catch((err) => {
+        return rejectWithValue({ status: err.response.status, statusText: err.response.statusText });
+      })
+);
+
 const articleSlice = createSlice({
   name: 'article',
   initialState: {
@@ -148,6 +185,32 @@ const articleSlice = createSlice({
     [fetchDeleteArticle.fulfilled]: (state) => {
       state.articleRequestStatus = 'fulfilled';
       // state.userRequestStatus = true;
+    },
+
+    // [fetchFavoriteArticle.pending]: (state, action) => {
+    //   console.log('отправлен запрос на фаворит');
+    // },
+    [fetchFavoriteArticle.fulfilled]: (state, action) => {
+      console.log('лайкусер');
+      const favoriteArticles = JSON.parse(localStorage.getItem('favoriteArticles'));
+      localStorage.setItem('favoriteArticles', JSON.stringify([...favoriteArticles, action.payload.article.slug]));
+    },
+    // [fetchFavoriteArticle.rejected]: (state, action) => {
+    //   console.log('ошибка запроса на фаворит');
+    // },
+
+    // [fetchUnfavoriteArticle.pending]: (state, action) => {
+    //   console.log('отправлен запрос на удаление из фаворит');
+    // },
+    [fetchUnfavoriteArticle.fulfilled]: (state, action) => {
+      const favoriteArticles = JSON.parse(localStorage.getItem('favoriteArticles')).filter(
+        (el) => el !== action.payload.article.slug
+      );
+      localStorage.setItem('favoriteArticles', JSON.stringify(favoriteArticles));
+      console.log('remove');
+    },
+    [fetchUnfavoriteArticle.rejected]: (state, action) => {
+      console.log('ошибка запроса на удаление фаворит');
     },
   },
 });

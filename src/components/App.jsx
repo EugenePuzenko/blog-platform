@@ -19,6 +19,9 @@ const App = () => {
     if (loggedInUser) {
       dispatch(fetchGetCurrentUser(loggedInUser));
     }
+
+    const favoriteArticles = localStorage.getItem('favoriteArticles');
+    if (!favoriteArticles) localStorage.setItem('favoriteArticles', JSON.stringify([]));
   }, [dispatch]);
 
   return (

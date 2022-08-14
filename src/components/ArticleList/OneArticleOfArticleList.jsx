@@ -7,13 +7,13 @@ import imgPlaceholder from '../../assets/img/img-placeholder.png';
 
 const OneArticleOfArticleList = ({ article, routPage }) => {
   return (
-    <article className={classes.article} key={uuidv4()}>
+    <article className={classes.article}>
       <div className={classes['article-text']}>
         <div className={classes.title}>
           <Link to={`/articles/page=${routPage}/article=${article.slug}`} className={classes['title-text']}>
             {article.title && cutText(article.title, 50)}
           </Link>
-          <Favorite slug={article.slug} favoritesCount={article.favoritesCount} />
+          <Favorite isFavorite={article.favorited} slug={article.slug} favoritesCount={article.favoritesCount} />
         </div>
         <div>
           {article.tagList

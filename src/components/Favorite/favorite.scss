@@ -1,6 +1,6 @@
 
 .favorite {
-    transform: translate(30px, 7px);
+  transform: translate(40px, 5px);
 }
 
 .checkbox {
@@ -14,11 +14,12 @@
 }
 
 .custom-checkbox {
-  position: absolute;
-  margin-left: -18px;
+  position: absolute;    
+  margin-left: -23px;
+  margin-top: 3px;
   width: 16px;
   height: 15px;
   background-image: url(../../assets/img/like.svg);
   background-color: #ffffff;
-    cursor: pointer;
+  cursor: pointer;
 }

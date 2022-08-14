@@ -89,7 +89,11 @@ const CurrentArticle = () => {
           <div className={classes['current-article-text']}>
             <div className={classes.title}>
               <h2 className={classes['title-text']}>{selectedArticle.title}</h2>
-              <Favorite favoritesCount={selectedArticle.favoritesCount} />
+              <Favorite
+                isFavorite={selectedArticle.favorited}
+                slug={slug}
+                favoritesCount={selectedArticle.favoritesCount}
+              />
             </div>
             <div className={classes['article-tags']}>
               {selectedArticle.tagList
