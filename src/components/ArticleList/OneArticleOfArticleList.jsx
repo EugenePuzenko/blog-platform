@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Favorite from '../Favorite/Favorite';
 import classes from '../App.module.scss';
 import { formatData, cutText } from '../../helpers';
-import imgPlaceholder from '../../assets/img/img-placeholder.png';
+import imgPlaceholder from '../../assets/img/img-placeholder.jpg';
 
 const OneArticleOfArticleList = ({ article, routPage }) => {
   const [loaded, setLoaded] = useState(false);

@@ -8,7 +8,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { Button, Modal } from 'antd';
 import classes from '../App.module.scss';
 import { formatData, cutText } from '../../helpers';
-import imgPlaceholder from '../../assets/img/img-placeholder.png';
+import imgPlaceholder from '../../assets/img/img-placeholder.jpg';
 import { fetchCurrentArticle, fetchDeleteArticle } from '../../store/articleSlice';
 import LoadingSpin from '../LoadingSpin/LoadingSpin';
 import useAuth from '../hooks/useAuth';

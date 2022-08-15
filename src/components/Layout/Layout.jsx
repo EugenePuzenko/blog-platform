@@ -2,7 +2,7 @@ import { Outlet, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import classes from '../App.module.scss';
 import useAuth from '../hooks/useAuth';
-import imgPlaceholder from '../../assets/img/img-placeholder.png';
+import imgPlaceholder from '../../assets/img/img-placeholder.jpg';
 import { logOut } from '../../store/userSlice';
 
 const Layout = () => {
