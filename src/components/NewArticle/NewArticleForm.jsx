@@ -50,7 +50,6 @@ const NewArticleForm = ({ formTitle, article, handlerFormSubmit }) => {
           Title
           <input
             {...register('title')}
-            // onChange={() => dispatch(closeAlert())}
             type="text"
             id="title"
             className={classes['form-text-input']}
@@ -64,7 +63,6 @@ const NewArticleForm = ({ formTitle, article, handlerFormSubmit }) => {
           Short description
           <input
             {...register('description')}
-            // onChange={() => dispatch(closeAlert())}
             type="text"
             id="description"
             className={classes['form-text-input']}
@@ -78,7 +76,6 @@ const NewArticleForm = ({ formTitle, article, handlerFormSubmit }) => {
           Text
           <textarea
             {...register('body')}
-            // onChange={() => dispatch(closeAlert())}
             type="text"
             id="body"
             className={`${classes['form-text-input']} ${classes['text-area']}`}
@@ -94,7 +91,6 @@ const NewArticleForm = ({ formTitle, article, handlerFormSubmit }) => {
             tagList.map((item, id) => (
               <div key={uuidv4()}>
                 <input
-                  // onChange={() => dispatch(closeAlert())}
                   disabled
                   id={id}
                   value={item}

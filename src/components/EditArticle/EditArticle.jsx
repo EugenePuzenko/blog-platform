@@ -27,8 +27,8 @@ const EditArticle = () => {
 
   const handlerFormSubmit = ({ title, description, body }, tagList) => {
     dispatch(fetchEditArticle({ slug, title, description, body, tagList }));
-
     navigate('/', { replace: true });
+    navigate(0);
   };
 
   return <NewArticleForm formTitle="Edit article" article={article} handlerFormSubmit={handlerFormSubmit} />;
