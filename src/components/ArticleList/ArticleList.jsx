@@ -21,9 +21,7 @@ const Article = () => {
   }, [dispatch]);
 
   const { page } = useParams();
-
   const [routPage, setRoutPage] = useState(+page ? +page : 1);
-
   const { articlesCount, articles, isArticlesListLoading } = useSelector(selectArticle);
 
   useEffect(() => {

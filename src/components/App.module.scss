@@ -31,13 +31,13 @@
     justify-content: center;
 
     &-item {
-      background-color: #1890ff;
+      background-color: $text-color--blue;
       border-radius: 4px;
 
       &-active a {
-        font-size: 12px;
-        line-height: 22px;
-        color: #ffffff;
+        font-size: $font-size--12px;
+        line-height: $line-height--22px;
+        color: $bg-color--white;
       }
     }
   }

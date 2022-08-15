@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import { Alert, Button, Space } from 'antd';
 import classes from '../App.module.scss';
 import { fetchCreateUser } from '../../store/userSlice';
+import { selectUserRequestStatus, selectErrorUserServer } from '../../store/selectors';
 
 const SignUp = () => {
   const formSchema = Yup.object().shape({
@@ -28,8 +29,8 @@ const SignUp = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userRequestStatus = useSelector((state) => state.user.userRequestStatus);
-  const errorUserServer = useSelector((state) => state.user.errorUserServer);
+  const userRequestStatus = useSelector(selectUserRequestStatus);
+  const errorUserServer = useSelector(selectErrorUserServer);
 
   useEffect(() => {
     if (userRequestStatus === 'fulfilled') {

@@ -9,6 +9,7 @@ import { Alert } from 'antd';
 import classes from '../App.module.scss';
 import useAuth from '../hooks/useAuth';
 import { fetchUpdateCurrentUser } from '../../store/userSlice';
+import { selectUserEditProfileStatus, selectErrorEditProfileServer } from '../../store/selectors';
 
 const SignUp = () => {
   const formSchema = Yup.object().shape({
@@ -28,8 +29,8 @@ const SignUp = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userEditProfileStatus = useSelector((state) => state.user.userEditProfileStatus);
-  const errorEditProfileServer = useSelector((state) => state.user.errorEditProfileServer);
+  const userEditProfileStatus = useSelector(selectUserEditProfileStatus);
+  const errorEditProfileServer = useSelector(selectErrorEditProfileServer);
 
   useEffect(() => {
     if (userEditProfileStatus === 'fulfilled') {

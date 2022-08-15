@@ -9,7 +9,6 @@ const Layout = () => {
   const dispatch = useDispatch();
 
   const { isAuth, username, image } = useAuth();
-  const userAvatar = image || imgPlaceholder;
 
   return (
     <>
@@ -33,7 +32,14 @@ const Layout = () => {
             <Link to="profile">
               <div>
                 <span className={classes.username}>{username}</span>
-                <img className={classes['user-avatar']} src={userAvatar} alt="user-avatar" />
+                <img
+                  src={image || imgPlaceholder}
+                  onError={(e) => {
+                    e.currentTarget.src = imgPlaceholder;
+                  }}
+                  className={classes['user-avatar']}
+                  alt="user-avatar"
+                />
               </div>
             </Link>
             <Link to="/">

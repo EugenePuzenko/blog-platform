@@ -1,2 +1,9 @@
 export const selectArticle = (store) => store.article;
 export const selectUser = (store) => store.user;
+export const selectArticleRequestStatus = (state) => state.user.articleRequestStatus;
+export const selectSelectedArticle = (state) => state.article.selectedArticle;
+export const selectUserEditProfileStatus = (state) => state.user.userEditProfileStatus;
+export const selectErrorEditProfileServer = (state) => state.user.errorEditProfileServer;
+export const selectUserRequestStatus = (state) => state.user.userRequestStatus;
+export const selectErrorSignInServer = (state) => state.user.errorSignInServer;
+export const selectErrorUserServer = (state) => state.user.errorUserServer;

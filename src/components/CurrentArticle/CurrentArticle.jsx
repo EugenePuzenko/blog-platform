@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import ReactMarkdown from 'react-markdown';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-
+import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { Button, Modal } from 'antd';
 import classes from '../App.module.scss';
@@ -46,6 +46,8 @@ const CurrentArticle = () => {
     setVisible(false);
   };
 
+  const [loaded, setLoaded] = useState(false);
+
   return (
     <article className={`${classes['current-article']} ${classes.article}`} key={uuidv4()}>
       {loadingSpinner}
@@ -57,14 +59,33 @@ const CurrentArticle = () => {
                 <div className={classes['user-name']}>{selectedArticle.author.username}</div>
                 <div className={classes['created-time']}>{formatData(selectedArticle.createdAt)}</div>
               </div>
-              <img
-                className={classes.avatar}
-                src={selectedArticle.author.image}
-                alt="avatar"
-                onError={(e) => {
-                  e.currentTarget.src = imgPlaceholder;
+              <div
+                style={{
+                  position: 'relative',
                 }}
-              />
+              >
+                <img
+                  className={classes.avatar}
+                  onLoad={() => setLoaded(true)}
+                  onError={(e) => {
+                    e.currentTarget.src = imgPlaceholder;
+                  }}
+                  src={selectedArticle?.author?.image}
+                  alt="avatar"
+                />
+                {!loaded && (
+                  <Skeleton
+                    style={{
+                      width: '46px',
+                      height: '46px',
+                      position: 'absolute',
+                      top: '0px',
+                      left: '0px',
+                      borderRadius: '50%',
+                    }}
+                  />
+                )}
+              </div>
             </div>
             {selectedArticle.author.username === username && (
               <div>
@@ -89,11 +110,7 @@ const CurrentArticle = () => {
           <div className={classes['current-article-text']}>
             <div className={classes.title}>
               <h2 className={classes['title-text']}>{selectedArticle.title}</h2>
-              <Favorite
-                isFavorite={selectedArticle.favorited}
-                slug={slug}
-                favoritesCount={selectedArticle.favoritesCount}
-              />
+              <Favorite slug={slug} favoritesCount={selectedArticle.favoritesCount} />
             </div>
             <div className={classes['article-tags']}>
               {selectedArticle.tagList

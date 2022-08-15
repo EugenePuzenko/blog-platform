@@ -24,7 +24,7 @@ export const fetchCreateUser = createAsyncThunk(
       .catch((err) => {
         return rejectWithValue({
           status: err.response.status,
-          statusText: err?.response?.data?.errors?.message,
+          statusText: err?.message,
         });
       });
   }
@@ -46,7 +46,7 @@ export const fetchGetCurrentUser = createAsyncThunk(
       .catch((err) => {
         return rejectWithValue({
           status: err.response.status,
-          statusText: err?.response?.data?.errors?.message,
+          statusText: err?.message,
         });
       });
   }
@@ -147,9 +147,6 @@ const userSlice = createSlice({
     },
   },
   extraReducers: {
-    // [fetchCreateUser.pending]: (state, action) => {
-    // console.log(state, action.payload);
-    // },
     [fetchCreateUser.fulfilled]: (state, action) => {
       state.isLoggedIn = true;
       state.userRequestStatus = 'fulfilled';
@@ -163,9 +160,6 @@ const userSlice = createSlice({
       state.errorUserServer = action.payload;
     },
 
-    // [fetchGetCurrentUser.pending]: (state, action) => {
-    //   console.log(action.payload);
-    // },
     [fetchGetCurrentUser.fulfilled]: (state, action) => {
       state.isLoggedIn = true;
       state.userRequestStatus = 'fulfilled';
@@ -175,9 +169,6 @@ const userSlice = createSlice({
       state.email = email;
       state.image = image;
     },
-    // [fetchGetCurrentUser.rejected]: (state, action) => {
-    //   console.log(action.payload);
-    // },
 
     [fetchSignInUser.pending]: (state, action) => {
       state.errorSignInServer = null;
@@ -196,12 +187,10 @@ const userSlice = createSlice({
       state.errorSignInServer = action.payload.statusText;
     },
 
-    [fetchUpdateCurrentUser.pending]: (state, action) => {
-      console.log('pending', state, action.payload);
+    [fetchUpdateCurrentUser.pending]: (state) => {
       state.errorEditProfileServer = null;
     },
     [fetchUpdateCurrentUser.fulfilled]: (state, action) => {
-      console.log('fulfilled', state, action.payload);
       state.isLoggedIn = true;
       state.userEditProfileStatus = 'fulfilled';
       const { username, email, token, image } = action.payload;
@@ -211,7 +200,6 @@ const userSlice = createSlice({
       state.image = image;
     },
     [fetchUpdateCurrentUser.rejected]: (state, action) => {
-      console.log('rejected', state, action.payload);
       state.userEditProfileStatus = 'rejected';
       state.errorEditProfileServer = action.payload.statusText;
     },

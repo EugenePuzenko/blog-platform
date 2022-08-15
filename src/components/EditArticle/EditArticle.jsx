@@ -3,15 +3,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import NewArticleForm from '../NewArticle/NewArticleForm';
 import { fetchCurrentArticle, fetchEditArticle } from '../../store/articleSlice';
+import { selectArticleRequestStatus, selectSelectedArticle } from '../../store/selectors';
 
 const EditArticle = () => {
   const dispatch = useDispatch();
   const { slug } = useParams();
 
   const navigate = useNavigate();
-  // const location = useLocation();
-  // const fromPage = location.state?.from?.pathname || '/';
-  const articleRequestStatus = useSelector((state) => state.user.articleRequestStatus);
+  const articleRequestStatus = useSelector(selectArticleRequestStatus);
 
   useEffect(() => {
     dispatch(fetchCurrentArticle(slug));
@@ -23,7 +22,7 @@ const EditArticle = () => {
     }
   }, [navigate, articleRequestStatus]);
 
-  const article = useSelector((state) => state.article.selectedArticle);
+  const article = useSelector(selectSelectedArticle);
 
   const handlerFormSubmit = ({ title, description, body }, tagList) => {
     dispatch(fetchEditArticle({ slug, title, description, body, tagList }));
