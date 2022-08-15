@@ -13,6 +13,7 @@ import { selectArticle } from '../../store/selectors';
 const Article = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const locationKey = location.key;
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem('token');
@@ -27,7 +28,7 @@ const Article = () => {
 
   useEffect(() => {
     dispatch(fetchGetArticles({ limit: 5, offset: page * 5 - 5 }));
-  }, [dispatch, page, location]);
+  }, [dispatch, page, locationKey]);
 
   useEffect(() => {
     dispatch(resetStatus());
