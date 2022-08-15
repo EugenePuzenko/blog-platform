@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector, useDispatch } from 'react-redux';
 import { Pagination } from 'antd';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import classes from '../App.module.scss';
 import { fetchGetArticles } from '../../store/articleSlice';
 import { resetStatus, fetchGetCurrentUser } from '../../store/userSlice';
@@ -12,6 +12,7 @@ import { selectArticle } from '../../store/selectors';
 
 const Article = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem('token');
@@ -26,7 +27,7 @@ const Article = () => {
 
   useEffect(() => {
     dispatch(fetchGetArticles({ limit: 5, offset: page * 5 - 5 }));
-  }, [dispatch, page]);
+  }, [dispatch, page, location]);
 
   useEffect(() => {
     dispatch(resetStatus());
