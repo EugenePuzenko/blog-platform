@@ -10,6 +10,7 @@ const NewArticle = () => {
   const handlerFormSubmit = ({ title, description, body }, tagList) => {
     dispatch(fetchCreateArticle({ title, description, body, tagList }));
     navigate('/', { replace: true });
+    navigate(0);
   };
 
   return <NewArticleForm formTitle="Create new article" handlerFormSubmit={handlerFormSubmit} />;

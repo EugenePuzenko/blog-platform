@@ -26,6 +26,7 @@ const CurrentArticle = () => {
   const deleteArticle = () => {
     dispatch(fetchDeleteArticle(slug));
     navigate('/', { replace: true });
+    navigate(0);
   };
 
   const { selectedArticle, isSelectedArticleLoading } = useSelector(selectArticle);

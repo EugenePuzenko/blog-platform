@@ -19,6 +19,7 @@ const EditArticle = () => {
   useEffect(() => {
     if (articleRequestStatus === 'fulfilled') {
       navigate('/', { replace: true });
+      navigate(0);
     }
   }, [navigate, articleRequestStatus]);
 
