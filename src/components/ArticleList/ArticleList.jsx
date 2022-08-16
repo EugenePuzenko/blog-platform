@@ -47,7 +47,7 @@ const Article = () => {
       </div>
       <Pagination
         onChange={(e) => setRoutPage(e)}
-        current={routPage}
+        current={+page || 1}
         total={articlesCount}
         pageSize={5}
         size="small"
