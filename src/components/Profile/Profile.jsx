@@ -4,12 +4,18 @@ import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
 import { Alert } from 'antd';
+import * as Yup from 'yup';
 import classes from '../App.module.scss';
 import useAuth from '../hooks/useAuth';
 import { fetchUpdateCurrentUser } from '../../store/userSlice';
-import { selectUserEditProfileStatus, selectErrorEditProfileServer } from '../../store/selectors';
+import {
+  selectUserEditProfileStatus,
+  selectEditProfileLoading,
+  selectEditProfileError,
+  selectInvalidEditProfile,
+} from '../../store/selectors';
+import LoadingSpin from '../LoadingSpin/LoadingSpin';
 
 const SignUp = () => {
   const formSchema = Yup.object().shape({
@@ -30,7 +36,9 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userEditProfileStatus = useSelector(selectUserEditProfileStatus);
-  const errorEditProfileServer = useSelector(selectErrorEditProfileServer);
+  const editProfileLoading = useSelector(selectEditProfileLoading);
+  const invalidEditProfile = useSelector(selectInvalidEditProfile);
+  const editProfileError = useSelector(selectEditProfileError);
 
   useEffect(() => {
     if (userEditProfileStatus === 'fulfilled') {
@@ -61,76 +69,81 @@ const SignUp = () => {
   });
 
   return (
-    <>
-      {errorEditProfileServer && (
+    <div className={`${classes.modal} ${classes['sign-up']}`}>
+      {editProfileLoading && (
+        <div className={`${classes.spin} ${classes['edit-profile-spin']}`}>
+          <LoadingSpin />
+        </div>
+      )}
+      {editProfileError && (
         <Alert
-          description="Как минимум одно поле должно быть обновлено."
-          type="info"
-          style={{ width: '30%', margin: '0 auto' }}
+          style={{ width: '100%', margin: '0 auto', marginBottom: '26px' }}
+          message="Ошибка редактирования профиля."
+          type="error"
           closable
         />
       )}
-      <div className={`${classes.modal} ${classes['sign-up']}`}>
-        <h2 className={classes['modal-header']}>Edit Profile</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
-          <label className={classes['form-label']} htmlFor="username">
-            Username
-            <input
-              {...register('username')}
-              type="text"
-              id="username"
-              className={`${classes['form-text-input']} ${errors?.username ? classes['invalid-input'] : ''}`}
-              placeholder="Username"
-            />
-            <div className={classes['form-error-message']}>
-              {errors?.username && <p>{errors?.username?.message || 'error'}</p>}
-            </div>
-          </label>
-          <label className={classes['form-label']} htmlFor="email">
-            Email address
-            <input
-              {...register('email')}
-              type="email"
-              id="email"
-              className={`${classes['form-text-input']} ${errors?.email ? classes['invalid-input'] : ''}`}
-              placeholder="Email address"
-            />
-            <div className={classes['form-error-message']}>
-              {errors?.email && <p>{errors?.email?.message || 'error'}</p>}
-            </div>
-          </label>
-          <label className={classes['form-label']} htmlFor="new-password">
-            New password
-            <input
-              {...register('password')}
-              type="password"
-              id="new-password"
-              className={`${classes['form-text-input']} ${errors?.password ? classes['invalid-input'] : ''}`}
-              placeholder="New password"
-            />
-            <div className={classes['form-error-message']}>
-              {errors?.password && <p>{errors?.password?.message || 'error'}</p>}
-            </div>
-          </label>
-          <label className={classes['form-label']} htmlFor="avatar-image">
-            Avatar image (url)
-            <input
-              {...register('image')}
-              type="text"
-              id="avatar-image"
-              className={`${classes['form-text-input']} ${errors?.image ? classes['invalid-input'] : ''}`}
-              placeholder="Avatar image"
-            />
-            <div className={classes['form-error-message']}>
-              {errors?.image && <p>{errors?.image?.message || 'error'}</p>}
-            </div>
-          </label>
-          <button aria-label="Save" type="submit" className={classes['form-btn']}>
-            Save
-          </button>
-        </form>
-      </div>
-    </>
+      <h2 className={classes['modal-header']}>Edit Profile</h2>
+      <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+        <label className={classes['form-label']} htmlFor="username">
+          Username
+          <input
+            {...register('username')}
+            type="text"
+            id="username"
+            className={`${classes['form-text-input']} ${errors?.username ? classes['invalid-input'] : ''}`}
+            placeholder="Username"
+          />
+          <div className={classes['form-error-message']}>
+            {errors?.username && <p>{errors?.username?.message || 'error'}</p>}
+            {invalidEditProfile && invalidEditProfile.username && <p>Такой username уже используется.</p>}
+          </div>
+        </label>
+        <label className={classes['form-label']} htmlFor="email">
+          Email address
+          <input
+            {...register('email')}
+            type="email"
+            id="email"
+            className={`${classes['form-text-input']} ${errors?.email ? classes['invalid-input'] : ''}`}
+            placeholder="Email address"
+          />
+          <div className={classes['form-error-message']}>
+            {errors?.email && <p>{errors?.email?.message || 'error'}</p>}
+            {invalidEditProfile && invalidEditProfile.email && <p>Такой email уже используется.</p>}
+          </div>
+        </label>
+        <label className={classes['form-label']} htmlFor="new-password">
+          New password
+          <input
+            {...register('password')}
+            type="password"
+            id="new-password"
+            className={`${classes['form-text-input']} ${errors?.password ? classes['invalid-input'] : ''}`}
+            placeholder="New password"
+          />
+          <div className={classes['form-error-message']}>
+            {errors?.password && <p>{errors?.password?.message || 'error'}</p>}
+          </div>
+        </label>
+        <label className={classes['form-label']} htmlFor="avatar-image">
+          Avatar image (url)
+          <input
+            {...register('image')}
+            type="text"
+            id="avatar-image"
+            className={`${classes['form-text-input']} ${errors?.image ? classes['invalid-input'] : ''}`}
+            placeholder="Avatar image"
+          />
+          <div className={classes['form-error-message']}>
+            {errors?.image && <p>{errors?.image?.message || 'error'}</p>}
+          </div>
+        </label>
+        <button aria-label="Save" type="submit" className={classes['form-btn']}>
+          Save
+        </button>
+      </form>
+    </div>
   );
 };
 

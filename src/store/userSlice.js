@@ -25,6 +25,7 @@ export const fetchCreateUser = createAsyncThunk(
         return rejectWithValue({
           status: err.response.status,
           statusText: err?.message,
+          incorrectData: err.response.data,
         });
       });
   }
@@ -74,6 +75,7 @@ export const fetchSignInUser = createAsyncThunk(
         return rejectWithValue({
           status: err.response.status,
           statusText: err?.message,
+          incorrectData: err.response.data,
         });
       })
 );
@@ -107,6 +109,7 @@ export const fetchUpdateCurrentUser = createAsyncThunk(
         return rejectWithValue({
           status: err.response.status,
           statusText: err?.message,
+          incorrectData: err.response.data,
         });
       })
 );
@@ -125,6 +128,15 @@ const userSlice = createSlice({
     userIsEdit: false,
     isLoggedIn: false,
     userEditProfileStatus: null,
+    createUserLoading: false,
+    invalidSignUp: null,
+    loginUserLoading: false,
+    invalidSignIn: null,
+    editProfileLoading: false,
+    invalidEditProfile: null,
+    editProfileError: false,
+    createUserError: false,
+    loginUserError: false,
   },
   reducers: {
     logOut(state) {
@@ -139,14 +151,17 @@ const userSlice = createSlice({
       state.userIsEdit = false;
       state.isLoggedIn = false;
     },
-    closeAlert(state) {
-      state.errorSignInServer = null;
-    },
     resetStatus(state) {
       state.userEditProfileStatus = null;
+      state.invalidEditProfile = null;
     },
   },
   extraReducers: {
+    [fetchCreateUser.pending]: (state) => {
+      state.userRequestStatus = 'pending';
+      state.createUserLoading = true;
+      state.invalidSignUp = null;
+    },
     [fetchCreateUser.fulfilled]: (state, action) => {
       state.isLoggedIn = true;
       state.userRequestStatus = 'fulfilled';
@@ -154,10 +169,19 @@ const userSlice = createSlice({
       localStorage.setItem('token', token);
       state.username = username;
       state.email = email;
+      state.createUserLoading = false;
+      state.invalidSignUp = null;
     },
     [fetchCreateUser.rejected]: (state, action) => {
       state.userRequestStatus = 'rejected';
       state.errorUserServer = action.payload;
+      state.createUserLoading = false;
+      if (action.payload.status === 422) {
+        state.invalidSignUp = action.payload.incorrectData.errors;
+      }
+      if (action.payload.status === 0) {
+        state.createUserError = true;
+      }
     },
 
     [fetchGetCurrentUser.fulfilled]: (state, action) => {
@@ -173,6 +197,8 @@ const userSlice = createSlice({
     [fetchSignInUser.pending]: (state, action) => {
       state.errorSignInServer = null;
       state.errorUserServer = action.payload;
+      state.loginUserLoading = true;
+      state.invalidSignIn = null;
     },
     [fetchSignInUser.fulfilled]: (state, action) => {
       state.isLoggedIn = true;
@@ -181,14 +207,26 @@ const userSlice = createSlice({
       localStorage.setItem('token', token);
       state.username = username;
       state.email = email;
+      state.loginUserLoading = false;
+      state.invalidSignIn = null;
     },
     [fetchSignInUser.rejected]: (state, action) => {
       state.userRequestStatus = 'rejected';
       state.errorSignInServer = action.payload.statusText;
+      state.loginUserLoading = false;
+
+      if (action.payload.status === 422) {
+        state.invalidSignIn = action.payload.incorrectData.errors;
+      }
+      if (action.payload.status === 0) {
+        state.loginUserError = true;
+      }
     },
 
     [fetchUpdateCurrentUser.pending]: (state) => {
       state.errorEditProfileServer = null;
+      state.editProfileLoading = true;
+      state.editProfileError = false;
     },
     [fetchUpdateCurrentUser.fulfilled]: (state, action) => {
       state.isLoggedIn = true;
@@ -198,10 +236,19 @@ const userSlice = createSlice({
       state.username = username;
       state.email = email;
       state.image = image;
+      state.editProfileLoading = false;
+      state.editProfileError = false;
     },
     [fetchUpdateCurrentUser.rejected]: (state, action) => {
       state.userEditProfileStatus = 'rejected';
       state.errorEditProfileServer = action.payload.statusText;
+      state.editProfileLoading = false;
+      if (action.payload.status === 422) {
+        state.invalidEditProfile = action.payload.incorrectData.errors;
+      }
+      if (action.payload.status === 0) {
+        state.editProfileError = true;
+      }
     },
   },
 });

@@ -8,7 +8,6 @@
   &:checked + .custom-checkbox {
     background-image: url(../../assets/img/liked.svg);
     height: 14px;
-    cursor: pointer;
   }
 }
 
@@ -20,5 +19,8 @@
   height: 15px;
   background-image: url(../../assets/img/like.svg);
   background-color: #ffffff;
+}
+
+.pointer {
   cursor: pointer;
 }

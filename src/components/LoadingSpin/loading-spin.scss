@@ -1,0 +1,31 @@
+.spin {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sign-in-spin {
+    width: 318px;
+    height: 310px;
+    background-color: rgba(246, 246, 246, 0.479);
+}
+
+.edit-profile-spin {
+    width: 318px;
+    height: 500px;
+    background-color: rgba(246, 246, 246, 0.479);
+}
+
+.article-spin {
+    width: 910px;
+    height: 770px;
+    background-color: white;
+    z-index: 1;
+}
+
+.article-form-spin {
+    width: 93%;
+    height: 85%;
+    background-color: rgba(246, 246, 246, 0.479);
+}

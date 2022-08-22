@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector, useDispatch } from 'react-redux';
-import { Pagination } from 'antd';
+import { Pagination, Alert } from 'antd';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import classes from '../App.module.scss';
 import { fetchGetArticles } from '../../store/articleSlice';
@@ -23,11 +23,11 @@ const Article = () => {
 
   const { page } = useParams();
   const [routPage, setRoutPage] = useState(+page ? +page : 1);
-  const { articlesCount, articles, isArticlesListLoading } = useSelector(selectArticle);
+  const { articlesCount, articles, isArticlesListLoading, isArticleRequestError } = useSelector(selectArticle);
 
   useEffect(() => {
-    dispatch(fetchGetArticles({ limit: 5, offset: page * 5 - 5 }));
-  }, [dispatch, page, location.key]);
+    dispatch(fetchGetArticles({ limit: 5, offset: routPage * 5 - 5 }));
+  }, [dispatch, page, location.key, routPage]);
 
   useEffect(() => {
     dispatch(resetStatus());
@@ -40,10 +40,18 @@ const Article = () => {
 
   return (
     <>
+      {isArticleRequestError && (
+        <Alert
+          style={{ width: '30%', margin: '0 auto', marginBottom: '26px' }}
+          message="Ошибка загрузки списка статей."
+          type="error"
+          closable
+        />
+      )}
       <div className={classes['articles-block']}>
         {isArticlesListLoading && <ArticleSkeleton articles={5} />}
         {!isArticlesListLoading &&
-          articles.map((article) => <OneArticleOfArticleList key={uuidv4()} routPage={routPage} article={article} />)}
+          articles.map((article) => <OneArticleOfArticleList key={uuidv4()} article={article} />)}
       </div>
       <Pagination
         onChange={(e) => setRoutPage(e)}

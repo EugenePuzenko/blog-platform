@@ -2,8 +2,17 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
+import { Alert } from 'antd';
 import classes from '../App.module.scss';
+import LoadingSpin from '../LoadingSpin/LoadingSpin';
+import {
+  selectArticleFormLoading,
+  selectCreateArticleError,
+  selectEditArticleLoading,
+  selectEditArticleError,
+} from '../../store/selectors';
 
 const NewArticleForm = ({ formTitle, article, handlerFormSubmit }) => {
   const formSchema = Yup.object().shape({
@@ -14,6 +23,10 @@ const NewArticleForm = ({ formTitle, article, handlerFormSubmit }) => {
 
   const [tagList, setTagList] = useState(article?.tagList || []);
   const [tagValue, setTagValue] = useState('');
+  const articleFormLoading = useSelector(selectArticleFormLoading);
+  const createArticleError = useSelector(selectCreateArticleError);
+  const editArticleLoading = useSelector(selectEditArticleLoading);
+  const editArticleError = useSelector(selectEditArticleError);
 
   const addTag = () => {
     setTagList([...tagList, tagValue]);
@@ -27,6 +40,24 @@ const NewArticleForm = ({ formTitle, article, handlerFormSubmit }) => {
   const onSubmit = (data) => {
     handlerFormSubmit({ ...data }, tagList);
   };
+
+  const createArticleErrorMessage = createArticleError && (
+    <Alert
+      style={{ width: '30%', margin: '0 auto', marginBottom: '26px' }}
+      message="Ошибка создания статьи."
+      type="error"
+      closable
+    />
+  );
+
+  const editArticleErrorMessage = editArticleError && (
+    <Alert
+      style={{ width: '30%', margin: '0 auto', marginBottom: '26px' }}
+      message="Ошибка редактирования статьи."
+      type="error"
+      closable
+    />
+  );
 
   const {
     register,
@@ -43,7 +74,14 @@ const NewArticleForm = ({ formTitle, article, handlerFormSubmit }) => {
   });
 
   return (
-    <div className={`${classes.modal} ${classes['article-form']}`}>
+    <div className={`${classes.modal} ${classes['article-form']}`} style={{ position: 'relative' }}>
+      {(articleFormLoading || editArticleLoading) && (
+        <div className={`${classes.spin} ${classes['article-form-spin']}`}>
+          <LoadingSpin />
+        </div>
+      )}
+      {createArticleErrorMessage}
+      {editArticleErrorMessage}
       <h2 className={classes['modal-header']}>{formTitle}</h2>
       <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
         <label className={classes['form-label']} htmlFor="title">

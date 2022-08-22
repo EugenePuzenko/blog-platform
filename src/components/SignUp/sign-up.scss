@@ -19,6 +19,12 @@
 
 .sign-up {
   width: 384px;
+
+  &-spin {
+    background-color: rgba(246, 246, 246, 0.479);
+    width: 318px;
+    height: 540px;
+  }
 }
 
 .form {

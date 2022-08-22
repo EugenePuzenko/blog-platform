@@ -3,32 +3,28 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import NewArticleForm from '../NewArticle/NewArticleForm';
 import { fetchCurrentArticle, fetchEditArticle } from '../../store/articleSlice';
-import { selectArticleRequestStatus, selectSelectedArticle } from '../../store/selectors';
+import { selectSelectedArticle, selectEditArticleStatus } from '../../store/selectors';
 
 const EditArticle = () => {
   const dispatch = useDispatch();
   const { slug } = useParams();
-
   const navigate = useNavigate();
-  const articleRequestStatus = useSelector(selectArticleRequestStatus);
+  const article = useSelector(selectSelectedArticle);
+  const editArticleStatus = useSelector(selectEditArticleStatus);
 
   useEffect(() => {
     dispatch(fetchCurrentArticle(slug));
   }, [dispatch, slug]);
 
   useEffect(() => {
-    if (articleRequestStatus === 'fulfilled') {
+    if (editArticleStatus === 'fulfilled') {
       navigate('/', { replace: true });
       navigate(0);
     }
-  }, [navigate, articleRequestStatus]);
-
-  const article = useSelector(selectSelectedArticle);
+  }, [dispatch, navigate, editArticleStatus]);
 
   const handlerFormSubmit = ({ title, description, body }, tagList) => {
     dispatch(fetchEditArticle({ slug, title, description, body, tagList }));
-    navigate('/', { replace: true });
-    navigate(0);
   };
 
   return <NewArticleForm formTitle="Edit article" article={article} handlerFormSubmit={handlerFormSubmit} />;

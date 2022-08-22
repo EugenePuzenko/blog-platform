@@ -6,6 +6,7 @@
   padding: 16px 22px 13px 22px;
 
   &-text {
+    cursor: pointer;
     font-family: 'Inter', sans-serif;
     font-size: $font-size--18px;
     line-height: $line-height--28px;
@@ -17,6 +18,15 @@
     display: flex;
     justify-content: space-between;
   }
+}
+
+.offline-message {
+  background-color: $color--error;
+  color: $bg-color--white;
+  height: 30px;
+  text-align: center;
+  line-height: $line-height--28px;
+  font-size: $font-size--16px;
 }
 
 .btn {

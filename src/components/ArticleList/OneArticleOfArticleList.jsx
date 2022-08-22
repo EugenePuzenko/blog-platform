@@ -7,14 +7,14 @@ import classes from '../App.module.scss';
 import { formatData, cutText } from '../../helpers';
 import imgPlaceholder from '../../assets/img/img-placeholder.jpg';
 
-const OneArticleOfArticleList = ({ article, routPage }) => {
+const OneArticleOfArticleList = ({ article }) => {
   const [loaded, setLoaded] = useState(false);
 
   return (
     <article className={classes.article}>
       <div className={classes['article-text']}>
         <div className={classes.title}>
-          <Link to={`/articles/page=${routPage}/article=${article.slug}`} className={classes['title-text']}>
+          <Link to={`/articles/article=${article.slug}`} className={classes['title-text']}>
             {article.title && cutText(article.title, 50)}
           </Link>
           <Favorite isFavorite={article.favorited} slug={article.slug} favoritesCount={article.favoritesCount} />

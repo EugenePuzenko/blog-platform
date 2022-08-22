@@ -60,7 +60,7 @@ export const fetchCreateArticle = createAsyncThunk(
 export const fetchEditArticle = createAsyncThunk(
   'articles/fetchEditArticle',
   async ({ slug, title, description, body, tagList }, { rejectWithValue }) => {
-    axios
+    return axios
       .put(
         `${BASE_URL}articles/${slug}`,
         {
@@ -74,30 +74,27 @@ export const fetchEditArticle = createAsyncThunk(
         {
           headers: {
             'Content-Type': 'application/json',
+            accept: 'application/json',
             Authorization: `Token ${localStorage.getItem('token')}`,
           },
         }
       )
-      .then((res) => res.data)
-      .catch((err) => {
-        return rejectWithValue({ status: err.response.status, statusText: err.response.statusText });
-      });
+      .then(({ data }) => data)
+      .catch((err) => rejectWithValue({ status: err.response.status, statusText: err.response.statusText }));
   }
 );
 
-export const fetchDeleteArticle = createAsyncThunk('articles/fetchDeleteArticle', async (slug, { rejectWithValue }) =>
-  axios
+export const fetchDeleteArticle = createAsyncThunk('articles/fetchDeleteArticle', async (slug, { rejectWithValue }) => {
+  return axios
     .delete(`${BASE_URL}articles/${slug}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Token ${localStorage.getItem('token')}`,
       },
     })
-    .then((res) => res.data)
-    .catch((err) => {
-      return rejectWithValue({ status: err.response.status, statusText: err.response.statusText });
-    })
-);
+    .then(({ data }) => data)
+    .catch((err) => rejectWithValue({ status: err.response.status, statusText: err.response.statusText }));
+});
 
 export const fetchFavoriteArticle = createAsyncThunk(
   'articles/fetchFavoriteArticle',
@@ -143,6 +140,16 @@ const articleSlice = createSlice({
     articlesCount: null,
     selectedArticle: null,
     isSelectedArticleLoading: true,
+    isArticleRequestError: false,
+    isCurrentArticleRequestError: false,
+    articleFormLoading: false,
+    createArticleError: null,
+    createArticleStatus: null,
+    editArticleLoading: false,
+    editArticleError: null,
+    editArticleStatus: null,
+    deleteArticleError: false,
+    deleteArticleStatus: null,
   },
   reducers: {},
   extraReducers: {
@@ -155,22 +162,60 @@ const articleSlice = createSlice({
       state.articles = [...action.payload.articles];
       state.articlesCount = action.payload.articlesCount;
       state.articleRequestStatus = 'fulfilled';
+      state.isArticleRequestError = false;
+    },
+    [fetchGetArticles.rejected]: (state) => {
+      state.isArticleRequestError = true;
     },
 
     [fetchCurrentArticle.pending]: (state) => {
       state.isSelectedArticleLoading = true;
+      state.isCurrentArticleRequestError = false;
     },
     [fetchCurrentArticle.fulfilled]: (state, action) => {
       state.isSelectedArticleLoading = false;
       state.selectedArticle = action.payload.article;
+      state.isCurrentArticleRequestError = false;
+    },
+    [fetchCurrentArticle.rejected]: (state) => {
+      state.isSelectedArticleLoading = false;
+      state.isCurrentArticleRequestError = true;
     },
 
+    [fetchCreateArticle.pending]: (state) => {
+      state.articleFormLoading = true;
+      state.createArticleError = null;
+    },
+    [fetchCreateArticle.fulfilled]: (state) => {
+      state.createArticleStatus = 'fulfilled';
+      state.articleFormLoading = false;
+      state.createArticleError = null;
+    },
+    [fetchCreateArticle.rejected]: (state) => {
+      state.articleFormLoading = false;
+      state.createArticleError = true;
+    },
+
+    [fetchEditArticle.pending]: (state) => {
+      state.editArticleLoading = true;
+      state.editArticleError = false;
+    },
     [fetchEditArticle.fulfilled]: (state) => {
-      state.articleRequestStatus = 'fulfilled';
+      state.editArticleLoading = false;
+      state.editArticleError = false;
+      state.editArticleStatus = 'fulfilled';
+    },
+    [fetchEditArticle.rejected]: (state) => {
+      state.editArticleLoading = false;
+      state.editArticleError = true;
     },
 
     [fetchDeleteArticle.fulfilled]: (state) => {
-      state.articleRequestStatus = 'fulfilled';
+      state.deleteArticleError = false;
+      state.deleteArticleStatus = 'fulfilled';
+    },
+    [fetchDeleteArticle.rejected]: (state) => {
+      state.deleteArticleError = true;
     },
 
     [fetchFavoriteArticle.fulfilled]: (state, action) => {

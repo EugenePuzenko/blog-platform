@@ -5,7 +5,7 @@ import useAuth from '../hooks/useAuth';
 import imgPlaceholder from '../../assets/img/img-placeholder.jpg';
 import { logOut } from '../../store/userSlice';
 
-const Layout = () => {
+const Layout = ({ isOnline }) => {
   const dispatch = useDispatch();
 
   const { isAuth, username, image } = useAuth();
@@ -13,7 +13,9 @@ const Layout = () => {
   return (
     <>
       <header className={classes.header}>
-        <h1 className={classes['header-text']}>Realworld Blog</h1>
+        <Link to="/">
+          <h1 className={classes['header-text']}>Realworld Blog</h1>
+        </Link>
         {!isAuth && (
           <div className={classes['header-authorization']}>
             <Link to="sign-in" className={classes.btn}>
@@ -54,6 +56,7 @@ const Layout = () => {
           </div>
         )}
       </header>
+      {!isOnline && <div className={classes['offline-message']}>Нет подключения к интернету</div>}
       <main className={classes.main}>
         <Outlet />
       </main>

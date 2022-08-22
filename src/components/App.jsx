@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import ArticleList from './ArticleList/ArticleList';
@@ -24,13 +24,25 @@ const App = () => {
     if (!favoriteArticles) localStorage.setItem('favoriteArticles', JSON.stringify([]));
   }, [dispatch]);
 
+  const [isOnline, setOnline] = useState(true);
+
+  useEffect(() => {
+    window.addEventListener('online', () => {
+      setOnline(true);
+    });
+
+    window.addEventListener('offline', () => {
+      setOnline(false);
+    });
+  }, []);
+
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
+      <Route path="/" element={<Layout isOnline={isOnline} />}>
         <Route index element={<Navigate to="articles" replace />} />
-        <Route path="articles" element={<ArticleList />} />
+        <Route path="articles" element={<ArticleList isOnline={isOnline} />} />
         <Route path="articles/page=:page" element={<ArticleList />} />
-        <Route path="articles/page=:page/article=:slug" element={<CurrentArticle />} />
+        <Route path="articles/article=:slug" element={<CurrentArticle />} />
         <Route path="sign-in" element={<SignIn />} />
         <Route path="sign-up" element={<SignUp />} />
         <Route
@@ -50,7 +62,7 @@ const App = () => {
           }
         />
         <Route
-          path="articles/page=:page/article=:slug/edit"
+          path="articles/article=:slug/edit"
           element={
             <RequireAuth>
               <EditArticle />

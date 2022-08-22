@@ -7,3 +7,21 @@ export const selectErrorEditProfileServer = (state) => state.user.errorEditProfi
 export const selectUserRequestStatus = (state) => state.user.userRequestStatus;
 export const selectErrorSignInServer = (state) => state.user.errorSignInServer;
 export const selectErrorUserServer = (state) => state.user.errorUserServer;
+export const selectCreateUserLoading = (state) => state.user.createUserLoading;
+export const selectInvalidSignUp = (state) => state.user.invalidSignUp;
+export const selectLoginUserLoading = (state) => state.user.loginUserLoading;
+export const selectInvalidSignIn = (state) => state.user.invalidSignIn;
+export const selectEditProfileLoading = (state) => state.user.editProfileLoading;
+export const selectInvalidEditProfile = (state) => state.user.invalidEditProfile;
+export const selectCreateArticleStatus = (state) => state.article.createArticleStatus;
+export const selectArticleFormLoading = (state) => state.article.articleFormLoading;
+export const selectCreateArticleError = (state) => state.article.createArticleError;
+export const selectEditArticleStatus = (state) => state.article.editArticleStatus;
+export const selectEditArticleLoading = (state) => state.article.editArticleLoading;
+export const selectEditArticleError = (state) => state.article.editArticleError;
+export const selectDeleteArticleError = (state) => state.article.deleteArticleError;
+export const selectDeleteArticleStatus = (state) => state.article.deleteArticleStatus;
+export const selectEditProfileError = (state) => state.user.editProfileError;
+
+export const selectCreateUserError = (state) => state.user.createUserError;
+export const selectLoginUserError = (state) => state.user.loginUserError;

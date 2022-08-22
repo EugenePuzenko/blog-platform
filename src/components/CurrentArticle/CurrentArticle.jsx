@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { Button, Modal } from 'antd';
+import { Button, Modal, Alert } from 'antd';
 import classes from '../App.module.scss';
 import { formatData, cutText } from '../../helpers';
 import imgPlaceholder from '../../assets/img/img-placeholder.jpg';
@@ -13,29 +13,11 @@ import { fetchCurrentArticle, fetchDeleteArticle } from '../../store/articleSlic
 import LoadingSpin from '../LoadingSpin/LoadingSpin';
 import useAuth from '../hooks/useAuth';
 import Favorite from '../Favorite/Favorite';
-
-import { selectArticle } from '../../store/selectors';
+import { selectArticle, selectDeleteArticleError, selectDeleteArticleStatus } from '../../store/selectors';
 
 const CurrentArticle = () => {
   const { slug } = useParams();
   const { username } = useAuth();
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const deleteArticle = () => {
-    dispatch(fetchDeleteArticle(slug));
-    navigate('/', { replace: true });
-    navigate(0);
-  };
-
-  const { selectedArticle, isSelectedArticleLoading } = useSelector(selectArticle);
-
-  useEffect(() => {
-    dispatch(fetchCurrentArticle(slug));
-  }, [dispatch, slug]);
-
-  const loadingSpinner = !selectedArticle && isSelectedArticleLoading && <LoadingSpin />;
 
   const [visible, setVisible] = useState(false);
 
@@ -47,11 +29,64 @@ const CurrentArticle = () => {
     setVisible(false);
   };
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { selectedArticle, isSelectedArticleLoading, isCurrentArticleRequestError } = useSelector(selectArticle);
+  const deleteArticleError = useSelector(selectDeleteArticleError);
+  const deleteArticleStatus = useSelector(selectDeleteArticleStatus);
+
+  const deleteArticle = () => {
+    dispatch(fetchDeleteArticle(slug));
+
+    if (deleteArticleError) hideModal();
+  };
+
+  useEffect(() => {
+    hideModal();
+  }, [deleteArticleError]);
+
+  useEffect(() => {
+    if (deleteArticleStatus === 'fulfilled') {
+      navigate('/', { replace: true });
+      navigate(0);
+    }
+  }, [deleteArticleStatus]);
+
+  useEffect(() => {
+    dispatch(fetchCurrentArticle(slug));
+  }, [dispatch, slug]);
+
+  const loadingSpinner = isSelectedArticleLoading && (
+    <div className={`${classes.spin} ${classes['article-spin']}`}>
+      <LoadingSpin />
+    </div>
+  );
+
+  const currentArticleRequestErrorMessage = isCurrentArticleRequestError && (
+    <Alert
+      style={{ width: '30%', margin: '0 auto', marginBottom: '26px' }}
+      message="Ошибка загрузки статьи."
+      type="error"
+      closable
+    />
+  );
+
+  const deleteArticleErrorMessage = deleteArticleError && (
+    <Alert
+      style={{ width: '30%', margin: '0 auto', marginBottom: '26px' }}
+      message="Ошибка удаления статьи."
+      type="error"
+      closable
+    />
+  );
+
   const [loaded, setLoaded] = useState(false);
 
   return (
     <article className={`${classes['current-article']} ${classes.article}`} key={uuidv4()}>
       {loadingSpinner}
+      {currentArticleRequestErrorMessage}
+      {deleteArticleErrorMessage}
       {selectedArticle && !isSelectedArticleLoading && (
         <>
           <div className={classes.aside}>

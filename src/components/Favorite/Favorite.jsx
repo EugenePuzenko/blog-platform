@@ -39,7 +39,7 @@ const Favorite = ({ slug, favoritesCount }) => {
           type="checkbox"
           id={slug}
         />
-        <span className={classes['custom-checkbox']} />
+        <span className={`${!isAuth ? '' : classes.pointer} ${classes['custom-checkbox']}`} />
         {likeCount}
       </label>
     </div>
