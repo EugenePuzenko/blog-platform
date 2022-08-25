@@ -72,7 +72,7 @@ const SignIn = () => {
           />
           <div className={classes['form-error-message']}>
             {errors?.email && <p>{errors?.email?.message || 'error'}</p>}
-            {invalidSignIn && invalidSignIn['email or password'] && <p>Неверный email адрес.</p>}
+            {invalidSignIn && invalidSignIn['email or password'] && <p>Неверный email или пароль.</p>}
           </div>
         </label>
         <label className={classes['form-label']} htmlFor="password">
@@ -86,7 +86,7 @@ const SignIn = () => {
           />
           <div className={classes['form-error-message']}>
             {errors?.password && <p>{errors?.password?.message || 'error'}</p>}
-            {invalidSignIn && invalidSignIn['email or password'] && <p>Неверный пароль.</p>}
+            {invalidSignIn && invalidSignIn['email or password'] && <p>Неверный email или пароль.</p>}
           </div>
         </label>
         <button aria-label="Login" className={classes['form-btn']} type="submit">
