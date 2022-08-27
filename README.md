@@ -1,1 +1,1 @@
-https://blog-platform-maw6bplyb-eugenepuzenko.vercel.app/articles
+https://blog-platform-6oyqjqcth-eugenepuzenko.vercel.app/articles
