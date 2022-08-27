@@ -31,7 +31,7 @@ const OneArticleOfArticleList = ({ article }) => {
                 )
             )}
         </div>
-        <p className={classes['article-descr']}>{article.description && cutText(article.description, 220)}</p>
+        <p className={classes['article-descr']}>{article.description && cutText(article.description, 210)}</p>
       </div>
       <div className={classes.user}>
         <div>
